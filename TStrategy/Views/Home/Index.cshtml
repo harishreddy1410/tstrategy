@@ -6,64 +6,26 @@
     <thead>
         <tr>
             <th>Symbol</th>
-            <th>% Change</th>
+            <th>% Chng</th>
             <th>Buy</th>
-            <th>CP</th>
+            
             <th>O/H/L</th>
-            <th>300 T</th>
+            <th>300 T(+200Charge)</th>
+            <th>Variables</th>
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <td>AbC</td>
-            <td>1</td>
-            <td>true</td>
-            <td>Test odfksdh</td>
-            <td>Test odfksdh</td>
-            <td>Test odfksdh</td>
-        </tr>
-        <tr>
-            <td>Xyz</td>
-            <td>4</td>
-            <td>true</td>
-            <td>Test odfksdh</td>
-            <td>Test odfksdh</td>
-            <td>Test odfksdh</td>
-        </tr>
-        <tr>
-            <td>1AbC</td>
-            <td>1.1</td>
-            <td>false</td>
-            <td>Test odfksdh</td>
-            <td>Test odfksdh</td>
-            <td>Test odfksdh</td>
-        </tr>
-        <tr>
-            <td>2Xyz</td>
-            <td>2.2</td>
-            <td>false</td>
-            <td>Test odfksdh</td>
-            <td>Test odfksdh</td>
-            <td>Test odfksdh</td>
-        </tr>
-        <tr>
-            <td>3Xyz</td>
-            <td>3</td>
-            <td>true</td>
-            <td>Test odfksdh</td>
-            <td>Test odfksdh</td>
-            <td>Test odfksdh</td>
-        </tr>
-
+        
     </tbody>
     <tfoot>
         <tr>
             <th>Symbol</th>
-            <th>% Change</th>
+            <th>% Chng</th>
             <th>Buy</th>
-            <th>CP</th>
+            
             <th>O/H/L</th>
-            <th>C</th>
+            <th>300 T(+200Charge)</th>  
+            <th>Variables</th>
         </tr>
     </tfoot>
 </table>
@@ -72,64 +34,25 @@
     <thead>
         <tr>
             <th>Symbol</th>
-            <th>% Change</th>
+            <th>% Chng</th>
             <th>Sell</th>
-            <th>A</th>
-            <th>B</th>
-            <th>C</th>
+            
+            <th>O/H/L</th>
+            <th>300 T(+200Charge)</th>
+            <th>Variables</th>
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <td>AbC</td>
-            <td>1</td>
-            <td>true</td>
-            <td>Test odfksdh</td>
-            <td>Test odfksdh</td>
-            <td>Test odfksdh</td>
-        </tr>
-        <tr>
-            <td>Xyz</td>
-            <td>4</td>
-            <td>true</td>
-            <td>Test odfksdh</td>
-            <td>Test odfksdh</td>
-            <td>Test odfksdh</td>
-        </tr>
-        <tr>
-            <td>1AbC</td>
-            <td>1.1</td>
-            <td>false</td>
-            <td>Test odfksdh</td>
-            <td>Test odfksdh</td>
-            <td>Test odfksdh</td>
-        </tr>
-        <tr>
-            <td>2Xyz</td>
-            <td>2.2</td>
-            <td>false</td>
-            <td>Test odfksdh</td>
-            <td>Test odfksdh</td>
-            <td>Test odfksdh</td>
-        </tr>
-        <tr>
-            <td>3Xyz</td>
-            <td>3</td>
-            <td>true</td>
-            <td>Test odfksdh</td>
-            <td>Test odfksdh</td>
-            <td>Test odfksdh</td>
-        </tr>
-
+       
     </tbody>
     <tfoot>
         <tr>
             <th>Symbol</th>
-            <th>% Change</th>
+            <th>% Chng</th>
             <th>Sell</th>
-            <th>A</th>
-            <th>B</th>
-            <th>C</th>
+            <th>O/H/L</th>
+            <th>300 T(+200Charge)</th>
+            <th>Variables</th>
         </tr>
     </tfoot>
 </table>
@@ -142,20 +65,135 @@
         background-color: #f10606f2;
         color: white;
     }
+
+    table#tOhlBuy.dataTable.display tbody td {
+        border-top: 1px solid green;
+    }
+    table#tOhlSell.dataTable.display tbody td {
+        border-top: 1px solid red;
+    }
+
 </style>
 
 
 <script type="text/javascript">
+    var stockData = @Html.Raw(ViewData["EquityWatch"]);
     $(document).ready(function () {
+        
         var buyTable = $('#tOhlBuy').DataTable({
-            "order": [[1, "asc"]]           
+            "order": [[1, "asc"]],
+            data: stockData.data,
+            columns: [
+                {
+                    "data": function (resp) {
+                        return resp.symbol + "<br /><b>" + resp.ltP + "</b>";
+                    }
+                },
+                {
+                    "data": function (resp) {
+                        return Number((resp.ptsC / resp.ltP.replace(",", "")) * 100).toFixed(2) + "%";
+                    }
+                },
+                {
+                    "data": function (resp) {
+                        return resp.open == resp.low;
+                    },
+                    "visible":false
+                },                
+                {
+                    "data": function (resp) {
+                        return resp.open + "/<br />" + resp.high + "/<br />" + resp.low;
+                    }
+                },
+                {
+                    "data": function (resp) {
+                        //Assumimg 6x - 10000 - 60,000  
+                        var currentPrice = Number( resp.ltP.replace(",", ""));
+
+                        var qtyToBuy = Math.floor(60000 / currentPrice);
+                        var spFor500Profit = Number((500 / qtyToBuy) + currentPrice).toFixed(2);
+                        return "Buy <b>" + qtyToBuy + "</b>Qty at <b>" + resp.ltP + "</b>,sell at <b>" + spFor500Profit + "</b>";
+                    }
+                },
+                {
+                    "data": function (resp) {
+                        //Assumimg 6x - 10000 - 60,000  
+                        var currentPrice = Number(resp.ltP.replace(",", ""));
+
+                        var qtyToBuy = Math.floor(60000 / currentPrice);
+                        var spFor500Profit = Number((500 / qtyToBuy) + currentPrice).toFixed(2);
+
+
+                        var target = Number(spFor500Profit - currentPrice).toFixed(2);
+                        var stopLoss = Number((Number(currentPrice) + (250 / qtyToBuy)) -currentPrice).toFixed(2);
+                        var trailingStopLoss = Number(stopLoss / 2).toFixed(2);
+
+                        return "<b> T : " + target + ",<br /> SL : " + stopLoss + ",<br /> TSL : " + trailingStopLoss + "</b>";
+                    }
+                }
+            ]
+            
         });
         buyTable.search("true").draw();
 
 
         var sellTable = $('#tOhlSell').DataTable({
-            "order": [[1, "asc"]]
+            "order": [[1, "asc"]],
+            data: stockData.data,
+            columns: [
+                {
+                    "data": function (resp) {
+                        return resp.symbol + "<br /><b>" + resp.ltP + "</b>";
+                    }
+                },
+                {
+                    "data": function (resp) {
+                        return Number((resp.ptsC / resp.ltP.replace(",", "")) * 100).toFixed(2) + "%";
+                    }
+                },
+                {
+                    "data": function (resp) {
+                        return resp.open == resp.high;
+                    },
+                    "visible": false
+                },
+                {
+                    "data": function (resp) {
+                        return resp.open + "/<br />" + resp.high + "/<br />" + resp.low;
+                    }
+                },
+                {
+                    "data": function (resp) {
+                        //Assumimg 6x - 10000 - 60,000     
+                        //Stop 250 loss 
+                        var qtyToBuy = Math.floor(60000 / resp.ltP.replace(",", ""));
+                        var spFor500Profit = Number(Number(resp.ltP) - (500 / qtyToBuy)).toFixed(2);
+                        
+                        return "Sell <b>" + qtyToBuy + "</b>Qty at <b>" + resp.ltP + "</b> place at <b>" + spFor500Profit + "</b>";
+                    }
+                },
+                {
+                    "data": function (resp) {
+                        //Assumimg 6x - 10000 - 60,000  
+                        //Assumimg 6x - 10000 - 60,000     
+                        //Stop 250 loss 
+                        var myRiskSl = 250;
+                        var cp = Number( Number(resp.ltP.replace(",", "")).toFixed(2));
+                        var qtyToBuy = Math.floor(60000 / resp.ltP.replace(",", ""));
+                        var spFor500Profit = Number(Number(resp.ltP) - (500 / qtyToBuy)).toFixed(2);
+
+                        var target = Number(cp - spFor500Profit).toFixed(2);                        
+                        var stopLoss = Number(cp + (myRiskSl / qtyToBuy) - cp).toFixed(2);
+                        var trailingStopLoss = Number(stopLoss / 2).toFixed(2);
+                        return "<b> T : " + target + ",<br /> SL : " + stopLoss + ",<br /> TSL : " + trailingStopLoss + "</b>";
+                    }
+                }
+            ]
         });
-        sellTable.search("false").draw();
+        sellTable.search("true").draw();
+
+        setInterval(function () {
+            window.location.reload();
+        },30000)
     });
 </script>
