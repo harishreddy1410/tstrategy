@@ -1,0 +1,161 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<br />
+<table id="tOhlBuy" class="display" style="width:100%">
+    <thead>
+        <tr>
+            <th>Symbol</th>
+            <th>% Change</th>
+            <th>Buy</th>
+            <th>CP</th>
+            <th>O/H/L</th>
+            <th>300 T</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>AbC</td>
+            <td>1</td>
+            <td>true</td>
+            <td>Test odfksdh</td>
+            <td>Test odfksdh</td>
+            <td>Test odfksdh</td>
+        </tr>
+        <tr>
+            <td>Xyz</td>
+            <td>4</td>
+            <td>true</td>
+            <td>Test odfksdh</td>
+            <td>Test odfksdh</td>
+            <td>Test odfksdh</td>
+        </tr>
+        <tr>
+            <td>1AbC</td>
+            <td>1.1</td>
+            <td>false</td>
+            <td>Test odfksdh</td>
+            <td>Test odfksdh</td>
+            <td>Test odfksdh</td>
+        </tr>
+        <tr>
+            <td>2Xyz</td>
+            <td>2.2</td>
+            <td>false</td>
+            <td>Test odfksdh</td>
+            <td>Test odfksdh</td>
+            <td>Test odfksdh</td>
+        </tr>
+        <tr>
+            <td>3Xyz</td>
+            <td>3</td>
+            <td>true</td>
+            <td>Test odfksdh</td>
+            <td>Test odfksdh</td>
+            <td>Test odfksdh</td>
+        </tr>
+
+    </tbody>
+    <tfoot>
+        <tr>
+            <th>Symbol</th>
+            <th>% Change</th>
+            <th>Buy</th>
+            <th>CP</th>
+            <th>O/H/L</th>
+            <th>C</th>
+        </tr>
+    </tfoot>
+</table>
+<br />
+<table id="tOhlSell" class="display" style="width:100%">
+    <thead>
+        <tr>
+            <th>Symbol</th>
+            <th>% Change</th>
+            <th>Sell</th>
+            <th>A</th>
+            <th>B</th>
+            <th>C</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>AbC</td>
+            <td>1</td>
+            <td>true</td>
+            <td>Test odfksdh</td>
+            <td>Test odfksdh</td>
+            <td>Test odfksdh</td>
+        </tr>
+        <tr>
+            <td>Xyz</td>
+            <td>4</td>
+            <td>true</td>
+            <td>Test odfksdh</td>
+            <td>Test odfksdh</td>
+            <td>Test odfksdh</td>
+        </tr>
+        <tr>
+            <td>1AbC</td>
+            <td>1.1</td>
+            <td>false</td>
+            <td>Test odfksdh</td>
+            <td>Test odfksdh</td>
+            <td>Test odfksdh</td>
+        </tr>
+        <tr>
+            <td>2Xyz</td>
+            <td>2.2</td>
+            <td>false</td>
+            <td>Test odfksdh</td>
+            <td>Test odfksdh</td>
+            <td>Test odfksdh</td>
+        </tr>
+        <tr>
+            <td>3Xyz</td>
+            <td>3</td>
+            <td>true</td>
+            <td>Test odfksdh</td>
+            <td>Test odfksdh</td>
+            <td>Test odfksdh</td>
+        </tr>
+
+    </tbody>
+    <tfoot>
+        <tr>
+            <th>Symbol</th>
+            <th>% Change</th>
+            <th>Sell</th>
+            <th>A</th>
+            <th>B</th>
+            <th>C</th>
+        </tr>
+    </tfoot>
+</table>
+
+<style>
+    table#tOhlBuy thead tr, table#tOhlBuy tfoot tr{
+        background-color: lawngreen;
+    }
+    table#tOhlSell thead tr, table#tOhlSell tfoot tr {
+        background-color: #f10606f2;
+        color: white;
+    }
+</style>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var buyTable = $('#tOhlBuy').DataTable({
+            "order": [[1, "asc"]]           
+        });
+        buyTable.search("true").draw();
+
+
+        var sellTable = $('#tOhlSell').DataTable({
+            "order": [[1, "asc"]]
+        });
+        sellTable.search("false").draw();
+    });
+</script>
