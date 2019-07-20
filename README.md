@@ -1,4 +1,4 @@
-# tstrategy
+# Tstrategy - stock market trading strategy
 
 # author : harishreddy1410@gmail.com
 
